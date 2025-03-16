@@ -20,18 +20,18 @@ def main():
     print(' [*] Waiting for messages. To exit press CTRL+C')
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    temporary = 1
+    messageID = 1
 
     def callback(ch, method, properties, body):
-        nonlocal temporary
+        nonlocal messageID
         event = Type3Event.deserialize(body)
         logging.info(f"Received event: {event}")
         ch.basic_ack(delivery_tag=method.delivery_tag)
         time.sleep(2)
-        new_event = Type4Event("event4", str({"message": f"Event4 - Message {temporary}"}))
+        new_event = Type4Event("event4", str({"message": f"Event4 - Message {messageID}"}))
         channel.basic_publish(exchange='', routing_key=publisher_queue_name, body=new_event.serialize())
         logging.info(f"Published event: {new_event}")
-        temporary += 1
+        messageID += 1
 
     channel.basic_consume(queue=consumer_queue_name, on_message_callback=callback)
     channel.start_consuming()

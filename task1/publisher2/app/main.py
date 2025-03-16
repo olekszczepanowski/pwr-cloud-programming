@@ -15,13 +15,13 @@ def main():
     print(' [*] Waiting for messages. To exit press CTRL+C')
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    temporary = 1
+    messageID = 1
 
     while True:
-        event = Type2Event("event2", str({"message": f"Event2 - Message {temporary}"}))
+        event = Type2Event("event2", str({"message": f"Event2 - Message {messageID}"}))
         channel.basic_publish(exchange='', routing_key=queue_name, body=event.serialize())
         logging.info(f"Published event: {event}")
-        temporary += 1
+        messageID += 1
         time.sleep(random.randint(1, 6))
 
 
