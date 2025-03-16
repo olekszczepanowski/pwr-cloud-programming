@@ -2,17 +2,17 @@ import json
 
 
 class Type1Event:
-    def __init__(self, name, data):
+    def __init__(self, name, message):
         self.name = name
-        self.data = data
+        self.message = message
 
     def __str__(self):
-        return f"Event({self.name}, {self.data})"
+        return f"Event({self.name}, {self.message})"
 
-    def to_json(self):
-        return json.dumps({"name": self.name, "data": self.data})
+    def serialize(self):
+        return json.dumps({"name": self.name, "data": self.message})
 
     @staticmethod
-    def from_json(body):
+    def deserialize(body):
         decoded = json.loads(body)
         return Type1Event(decoded["name"], decoded["data"])

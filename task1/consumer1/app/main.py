@@ -16,7 +16,7 @@ def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     def callback(ch, method, properties, body):
-        event = Type1Event.from_json(body)
+        event = Type1Event.deserialize(body)
         logging.info(f"Received event: {event}")
         ch.basic_ack(delivery_tag=method.delivery_tag)
         time.sleep(3)

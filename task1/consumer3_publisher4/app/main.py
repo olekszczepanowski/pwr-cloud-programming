@@ -24,12 +24,12 @@ def main():
 
     def callback(ch, method, properties, body):
         nonlocal temporary
-        event = Type3Event.from_json(body)
+        event = Type3Event.deserialize(body)
         logging.info(f"Received event: {event}")
         ch.basic_ack(delivery_tag=method.delivery_tag)
         time.sleep(2)
         new_event = Type4Event("event4", str({"message": f"Event4 - Message {temporary}"}))
-        channel.basic_publish(exchange='', routing_key=publisher_queue_name, body=new_event.to_json())
+        channel.basic_publish(exchange='', routing_key=publisher_queue_name, body=new_event.serialize())
         logging.info(f"Published event: {new_event}")
         temporary += 1
 

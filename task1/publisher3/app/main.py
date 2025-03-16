@@ -20,7 +20,7 @@ def main():
 
     while True:
         event = Type3Event("event3", str({"message": f"Event3 - Message {temporary}"}))
-        channel.basic_publish(exchange='', routing_key=queue_name, body=event.to_json())
+        channel.basic_publish(exchange='', routing_key=queue_name, body=event.serialize())
         logging.info(f"Published event: {event}")
         temporary += 1
         time.sleep(random.randint(5, 15))
